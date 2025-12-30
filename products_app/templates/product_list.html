@@ -1,0 +1,11 @@
+{% for product in products %}
+  <h2>{{ product.title }}</h2>
+  <p>{{ product.price }}</p>
+  <p>{{ product.description }}</p>
+
+  {% if product.image %}
+    <img src="{{ product.image.url }}" width="200">
+  {% endif %}
+{% endfor %}
+
+

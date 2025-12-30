@@ -1,6 +1,9 @@
 from django.shortcuts import render
 from django.http import HttpResponse
 from django.utils import timezone
+from django.shortcuts import render
+from .models import Product
+
 
 def top5_products(request):
     products = [
@@ -22,4 +25,11 @@ def about_me(request):
         <img src="https://linguacats.com/media/zoo/images/Korea_557b98c6da7d269ce2357efaceac8303.jpg">
         <p>Меня зовут Акылай, я учу Django 😊</p>
     """)
+
+from django.shortcuts import render
+from .models import Product
+
+def product_list(request):
+    products = Product.objects.all()
+    return render(request, 'product_list.html', {'products': products})
 
