@@ -33,3 +33,25 @@ def product_list(request):
     products = Product.objects.all()
     return render(request, 'product_list.html', {'products': products})
 
+from django.shortcuts import render, get_object_or_404, redirect
+from .models import Product, Review
+
+def product_detail(request, pk):
+    product = get_object_or_404(Product, pk=pk)
+    reviews = product.reviews.all()
+
+    if request.method == 'POST':
+        name = request.POST.get('name')
+        text = request.POST.get('text')
+
+        Review.objects.create(
+            product=product,
+            name=name,
+            text=text
+        )
+        return redirect('product_detail', pk=pk)
+
+    return render(request, 'product_detail.html', {
+        'product': product,
+        'reviews': reviews
+    })
