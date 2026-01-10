@@ -1,9 +1,7 @@
-from django.shortcuts import render
+from django.shortcuts import render, get_object_or_404
 from django.http import HttpResponse
 from django.utils import timezone
-from django.shortcuts import render
-from .models import Product
-
+from .models import Product, Category
 
 def top5_products(request):
     products = [
@@ -26,32 +24,26 @@ def about_me(request):
         <p>Меня зовут Акылай, я учу Django 😊</p>
     """)
 
-from django.shortcuts import render
-from .models import Product
-
 def product_list(request):
     products = Product.objects.all()
     return render(request, 'product_list.html', {'products': products})
 
-from django.shortcuts import render, get_object_or_404, redirect
-from .models import Product, Review
-
 def product_detail(request, pk):
     product = get_object_or_404(Product, pk=pk)
-    reviews = product.reviews.all()
+    return render(request, 'product_detail.html', {'product': product})
 
-    if request.method == 'POST':
-        name = request.POST.get('name')
-        text = request.POST.get('text')
+def categories_list(request):
+    categories = Category.objects.all()
+    return render(request, 'categories.html', {'categories': categories})
 
-        Review.objects.create(
-            product=product,
-            name=name,
-            text=text
-        )
-        return redirect('product_detail', pk=pk)
+def products_list(request):
+    products = Product.objects.all()
+    return render(request, 'products.html', {'products': products})
 
-    return render(request, 'product_detail.html', {
-        'product': product,
-        'reviews': reviews
+def category_products(request, category_id):
+    category = get_object_or_404(Category, id=category_id)
+    products = Product.objects.filter(category=category)
+    return render(request, 'category_products.html', {
+        'category': category,
+        'products': products
     })
