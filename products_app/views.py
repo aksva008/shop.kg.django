@@ -1,81 +1,85 @@
-from django.shortcuts import render
+from django.shortcuts import render, get_object_or_404, redirect
+
 from .models import Product, Review
-from django.contrib.auth.decorators import login_required
-from django.shortcuts import redirect
+
 
 def home(request):
     """Главная страница"""
-    products = Product.objects.all()[:5]  
-    
+    products = Product.objects.all()[:5]
 
-    if not products:
-        Product.objects.create(
-            name="Кимпаб",
-            korean_name="김밥",
-            price=350,
-            description="Корейские роллы с овощами, яйцом и мясом"
-        )
-        Product.objects.create(
-            name="Токпоки", 
-            korean_name="떡볶이",
-            price=450,
-            description="Острые рисовые палочки в соусе"
-        )
-        products = Product.objects.all()
-    
     return render(request, 'products_app/home.html', {
         'products': products,
-        'title': 'Главная страница'
+        'title': 'Главная'
     })
 
+
 def product_list(request):
+    """Список всех продуктов"""
     products = Product.objects.all()
-    return render(request, 'products_app/product_list.html', {
+
+    return render(request, 'products_app/products_list.html', {
         'products': products,
         'title': 'Все продукты'
     })
 
-@login_required
-def add_review(request):
-    if request.method == 'POST':
-        product_id = request.POST.get('product')
-        text = request.POST.get('text')
-        rating = request.POST.get('rating')
-        
-        try:
-            product = Product.objects.get(id=product_id)
-            Review.objects.create(
-                product=product,
-                user=request.user,
-                text=text,
-                rating=rating,
-                is_published=True
-            )
-            return redirect('product_list')
-        except Product.DoesNotExist:
-            pass
-    
-    products = Product.objects.all()
-    return render(request, 'products_app/add_review.html', {
-        'products': products
+
+def product_detail(request, product_id):
+    """Детальная страница продукта с комментариями"""
+    product = get_object_or_404(Product, id=product_id)
+    reviews = Review.objects.filter(product=product)
+
+    return render(request, 'products_app/products_detail.html', {
+        'product': product,
+        'reviews': reviews
     })
 
+
+def add_review(request, product_id):
+    """Добавление комментария к продукту (без авторизации)"""
+    product = get_object_or_404(Product, id=product_id)
+
+    if request.method == 'POST':
+        author_name = request.POST.get('author_name')
+        text = request.POST.get('text')
+        rating = request.POST.get('rating')
+
+        Review.objects.create(
+            product=product,
+            author_name=author_name,
+            text=text,
+            rating=rating
+        )
+
+        return redirect('product_detail', product_id=product.id)
+
+    return render(request, 'products_app/add_review.html', {
+        'product': product
+    })
+
+
 def blog(request):
+    """Блог"""
     return render(request, 'products_app/blog.html', {
         'title': 'Блог'
     })
 
+
 def about(request):
+    """О нас"""
     return render(request, 'products_app/about.html', {
         'title': 'О нас'
     })
 
-def hashtags(request):
-    return render(request, 'products_app/hashtags.html', {
-        'title': 'Хештеги'
-    })
 
 def basket(request):
+    """Корзина"""
     return render(request, 'products_app/basket.html', {
         'title': 'Корзина'
+    })
+
+
+def hashtags(request):
+    """Хештеги"""
+    return render(request, 'products_app/hashtags.html', {
+        'title': 'Hashtags'
     })

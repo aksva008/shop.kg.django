@@ -1,0 +1,20 @@
+
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <title>{{ title|default:"Shop" }}</title>
+</head>
+<body>
+
+    {% include 'products_app/includes/header.html' %}
+
+    <main>
+        {% block content %}
+        {% endblock %}
+    </main>
+
+    {% include 'products_app/includes/footer.html' %}
+
+</body>
+</html>

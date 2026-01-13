@@ -1,0 +1,32 @@
+{% extends 'products_app/base.html' %}
+
+{% block content %}
+<h1>{{ product.name }}</h1>
+
+{% if product.image %}
+    <img src="{{ product.image.url }}" width="300">
+{% endif %}
+
+<p><strong>Корейское название:</strong> {{ product.korean_name }}</p>
+<p>{{ product.description }}</p>
+<p>Цена: {{ product.price }} сом</p>
+
+<hr>
+
+<h2>Комментарии</h2>
+
+{% for review in reviews %}
+    <div>
+        <p><strong>{{ review.author_name }}</strong></p>
+        <p>Оценка: {{ review.rating }}/5</p>
+        <p>{{ review.text }}</p>
+        <hr>
+    </div>
+{% empty %}
+    <p>Комментариев пока нет</p>
+{% endfor %}
+
+<a href="{% url 'add_review' product.id %}">
+    Оставить комментарий
+</a>
+{% endblock %}
