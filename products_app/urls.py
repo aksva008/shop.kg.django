@@ -1,5 +1,6 @@
-from django.urls import path
+from django.urls import path, include
 from . import views
+from django.contrib import admin
 
 urlpatterns = [
     path('', views.home, name='home'),
@@ -9,5 +10,6 @@ urlpatterns = [
     path('blog/', views.blog, name='blog'),
     path('about/', views.about, name='about'),
     path('hashtags/', views.hashtags, name='hashtags'),
+    path('contact/', views.contact, name='contact'),
     path('basket/', views.basket, name='basket'),
 ]

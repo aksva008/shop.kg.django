@@ -1,0 +1,44 @@
+{% extends 'products_app/base.html' %}
+
+{% block title %}Корзина{% endblock %}
+
+{% block content %}
+<h1>Ваша корзина</h1>
+
+{% if items %}
+<table border="1" cellpadding="5" cellspacing="0">
+    <tr>
+        <th>Товар</th>
+        <th>Количество</th>
+        <th>Имя заказчика</th>
+        <th>Телефон</th>
+        <th>Адрес</th>
+        <th>Email</th>
+        <th>Действия</th>
+    </tr>
+    {% for item in items %}
+    <tr>
+        <td>{{ item.product.name }}</td>
+        <td>{{ item.quantity }}</td>
+        <td>{{ item.customer_name }}</td>
+        <td>{{ item.phone }}</td>
+        <td>{{ item.address }}</td>
+        <td>{{ item.email }}</td>
+        <td>
+            <a href="{% url 'edit_basket_item' item.id %}">Редактировать</a> |
+            <a href="{% url 'delete_from_basket' item.id %}">Удалить</a>
+        </td>
+    </tr>
+    {% endfor %}
+</table>
+
+<br>
+<a href="{% url 'place_order' %}">
+    <button>Оформить заказ</button>
+</a>
+
+{% else %}
+<p>Корзина пуста.</p>
+{% endif %}
+
+{% endblock %}

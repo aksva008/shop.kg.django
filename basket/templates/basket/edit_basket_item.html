@@ -1,0 +1,15 @@
+{% extends 'products_app/base.html' %}
+
+{% block title %}Редактировать заказ{% endblock %}
+
+{% block content %}
+<h2>Редактировать заказ: {{ item.product.name }}</h2>
+
+<form method="post">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <button type="submit">Сохранить изменения</button>
+</form>
+
+<a href="{% url 'basket_list' %}">Вернуться в корзину</a>
+{% endblock %}

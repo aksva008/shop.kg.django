@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <title>{% block title %}Shop.kg{% endblock %}</title>
+</head>
+<body>
+<nav>
+    <a href="{% url 'home' %}">Главная</a> |
+    <a href="{% url 'about' %}">О нас</a> |
+    <a href="{% url 'contact' %}">Контакты</a> |
+    <a href="{% url 'product_list' %}">Продукты</a> |
+    <a href="{% url 'basket_list' %}">Корзина</a>
+</nav>
+
+<hr>
+
+{% block content %}
+{% endblock %}
+</body>
+</html>

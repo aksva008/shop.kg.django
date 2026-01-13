@@ -1,5 +1,7 @@
 {% extends 'products_app/base.html' %}
 
+{% block title %}Все продукты{% endblock %}
+
 {% block content %}
 <h1>Все продукты</h1>
 
@@ -14,10 +16,11 @@
             <p>{{ product.description }}</p>
             <p>Цена: {{ product.price }} сом</p>
 
-            <a href="{% url 'product_detail' product.id %}">
-                Подробнее
-            </a>
+            <a href="{% url 'product_detail' product.id %}">Подробнее</a> | 
+            <a href="{% url 'add_to_basket' product.id %}">Добавить в корзину</a>
         </li>
+    {% empty %}
+        <li>Продукты отсутствуют.</li>
     {% endfor %}
 </ul>
 {% endblock %}

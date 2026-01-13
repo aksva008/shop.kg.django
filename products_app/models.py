@@ -26,3 +26,5 @@ class Review(models.Model):
     
     def __str__(self):
         return f"Отзыв  {self.author_name} на {self.product}"
+    
+    

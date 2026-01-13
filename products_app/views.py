@@ -83,3 +83,11 @@ def hashtags(request):
     return render(request, 'products_app/hashtags.html', {
         'title': 'Hashtags'
     })
+
+
+def contact(request):
+    """Контакты"""
+    return render(request, 'products_app/contact.html', {
+        'title': 'Контакты'
+        })
+    
