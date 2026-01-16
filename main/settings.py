@@ -28,8 +28,9 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'products_app',
-    'users',
     'basket',
+    'users',
+    'captcha',
 ]
 
 MIDDLEWARE = [
@@ -102,6 +103,9 @@ TIME_ZONE = 'UTC'
 USE_I18N = True
 
 USE_TZ = True
+LOGIN_REDIRECT_URL = 'users:all_users'
+LOGOUT_REDIRECT_URL = 'login'
+
 
 
 # Static files (CSS, JavaScript, Images)
@@ -112,3 +116,7 @@ STATIC_URL = '/static/'
 
 MEDIA_URL = '/media/'
 MEDIA_ROOT = BASE_DIR / 'media'
+
+
+AUTH_USER_MODEL = 'users.CustomUser'
+

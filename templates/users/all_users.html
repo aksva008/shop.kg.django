@@ -1,0 +1,43 @@
+{% extends "products_app/base.html" %}
+
+{% block content %}
+<h1>Все анкеты пользователей</h1>
+
+<table border="1" cellpadding="5">
+    <tr>
+        <th>Username</th>
+        <th>Email</th>
+        <th>Телефон</th>
+        <th>Возраст</th>
+        <th>Город</th>
+        <th>Уровень английского</th>
+        <th>Описание</th>
+        <th>Дата рождения</th>
+        <th>GitHub</th>
+        <th>Опыт работы</th>
+        <th>Фото</th>
+    </tr>
+    {% for user in users %}
+    <tr>
+        <td>{{ user.username }}</td>
+        <td>{{ user.email }}</td>
+        <td>{{ user.phone }}</td>
+        <td>{{ user.age }}</td>
+        <td>{{ user.city }}</td>
+        <td>{{ user.english_level }}</td>
+        <td>{{ user.discription }}</td>
+        <td>{{ user.date_of_birth }}</td>
+        <td><a href="{{ user.github }}" target="_blank">{{ user.github }}</a></td>
+        <td>{{ user.experience }}</td>
+        <td>
+            {% if user.your_photo %}
+                <img src="{{ user.your_photo.url }}" width="100">
+            {% else %}
+                Нет фото
+            {% endif %}
+        </td>
+    </tr>
+    {% endfor %}
+</table>
+
+{% endblock %}

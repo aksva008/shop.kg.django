@@ -1,0 +1,7 @@
+{% if user.is_authenticated %}
+    <a href="{% url 'users:all_users' %}">Анкеты</a>
+    <a href="{% url 'users:logout' %}">Выход</a>
+{% else %}
+    <a href="{% url 'register' %}">Регистрация</a>
+    <a href="{% url 'login' %}">Авторизация</a>
+{% endif %}
