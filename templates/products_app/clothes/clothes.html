@@ -1,0 +1,44 @@
+{% extends 'products_app/base.html' %}
+
+{% block content %}
+
+<h1>Одежда</h1>
+
+
+<h2>Фильтр по брендам</h2>
+{% for brand in brands %}
+    <a href="?brand={{ brand.id }}">
+        <button>{{ brand.name }}</button>
+    </a>
+{% endfor %}
+
+
+<h2>Сортировка</h2>
+<a href="?sort=title"><button>По названию</button></a>
+<a href="?sort=date"><button>По дате</button></a>
+
+<hr>
+
+
+<h2>Список одежды</h2>
+{% for item in clothes %}
+    <div style="margin-bottom: 20px;">
+        <h3>{{ item.title }}</h3>
+        {% if item.image %}
+            <img src="{{ item.image.url }}" width="150">
+        {% endif %}
+
+        <p>
+            Бренды:
+            {% for b in item.brands.all %}
+                {{ b.name }}{% if not forloop.last %}, {% endif %}
+            {% endfor %}
+        </p>
+
+        <p>Дата создания: {{ item.created_at }}</p>
+    </div>
+{% empty %}
+    <p>Одежда не найдена.</p>
+{% endfor %}
+
+{% endblock %}

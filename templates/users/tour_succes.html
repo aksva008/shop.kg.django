@@ -1,0 +1,9 @@
+<h2>Регистрация прошла успешно!</h2>
+
+{% if registration %}
+    <p>Вы зарегистрированы на тур: <strong>{{ registration.tour.title }}</strong></p>
+    <p>Локация: {{ registration.tour.location }}</p>
+    <p>Дата регистрации: {{ registration.registered_at }}</p>
+{% else %}
+    <p>Вы ещё не зарегистрированы на тур.</p>
+{% endif %}

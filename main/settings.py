@@ -31,6 +31,7 @@ INSTALLED_APPS = [
     'basket',
     'users',
     'captcha',
+    'clothes',
 ]
 
 MIDDLEWARE = [

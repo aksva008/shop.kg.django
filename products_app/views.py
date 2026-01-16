@@ -91,3 +91,17 @@ def contact(request):
         'title': 'Контакты'
         })
     
+
+def search(request):
+    query = request.GET.get('s')
+
+    products = Product.objects.all()
+
+    if query:
+        products = products.filter(name__icontains=query)
+
+    return render(request, 'products_app/search.html', {
+        "products" : products,
+        "query" : query
+    })
+

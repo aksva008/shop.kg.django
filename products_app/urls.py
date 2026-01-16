@@ -12,4 +12,5 @@ urlpatterns = [
     path('hashtags/', views.hashtags, name='hashtags'),
     path('contact/', views.contact, name='contact'),
     path('basket/', views.basket, name='basket'),
+    path('search/', views.search, name='search'),
 ]

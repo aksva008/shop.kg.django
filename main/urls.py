@@ -11,6 +11,7 @@ urlpatterns = [
     path('captcha/', include('captcha.urls')),
     path('users/', include('users.urls', namespace='users')),
     path('login/', auth_views.LoginView.as_view(template_name='users/login.html'), name='login'),
+    path('clothes/', include('clothes.urls')),
 ]
 
 

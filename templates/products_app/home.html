@@ -3,6 +3,13 @@
 {% block content %}
 <h1>Главная страница</h1>
 
+
+<form method="GET" action="{% url 'search' %}" style="margin: 20px 0;">
+    <input type="text" name="s" placeholder="Поиск..." style="padding: 10px; width: 300px;">
+    <button type="submit" style="padding: 10px 20px;">Найти</button>
+</form>
+
+
 <ul>
     {% for product in products %}
         <li>
