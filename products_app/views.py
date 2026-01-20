@@ -1,107 +1,71 @@
-from django.shortcuts import render, get_object_or_404, redirect
-
+from django.views.generic import ListView, DetailView, CreateView, TemplateView
+from django.urls import reverse_lazy
 from .models import Product, Review
 
 
-def home(request):
-    """Главная страница"""
-    products = Product.objects.all()[:5]
-
-    return render(request, 'products_app/home.html', {
-        'products': products,
-        'title': 'Главная'
-    })
+class HomeView(ListView):
+    model = Product
+    template_name = 'products_app/home.html'
+    context_object_name = 'products'
+    queryset = Product.objects.all()[:5]
 
 
-def product_list(request):
-    """Список всех продуктов"""
-    products = Product.objects.all()
-
-    return render(request, 'products_app/products_list.html', {
-        'products': products,
-        'title': 'Все продукты'
-    })
+class ProductListView(ListView):
+    model = Product
+    template_name = 'products_app/products_list.html'
+    context_object_name = 'products'
 
 
-def product_detail(request, product_id):
-    """Детальная страница продукта с комментариями"""
-    product = get_object_or_404(Product, id=product_id)
-    reviews = Review.objects.filter(product=product)
+class ProductDetailView(DetailView):
+    model = Product
+    template_name = 'products_app/products_detail.html'
+    context_object_name = 'product'
+    pk_url_kwarg = 'product_id'
 
-    return render(request, 'products_app/products_detail.html', {
-        'product': product,
-        'reviews': reviews
-    })
-
-
-def add_review(request, product_id):
-    """Добавление комментария к продукту (без авторизации)"""
-    product = get_object_or_404(Product, id=product_id)
-
-    if request.method == 'POST':
-        author_name = request.POST.get('author_name')
-        text = request.POST.get('text')
-        rating = request.POST.get('rating')
-
-        Review.objects.create(
-            product=product,
-            author_name=author_name,
-            text=text,
-            rating=rating
-        )
-
-        return redirect('product_detail', product_id=product.id)
-
-    return render(request, 'products_app/add_review.html', {
-        'product': product
-    })
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['reviews'] = Review.objects.filter(product=self.object)
+        return context
 
 
-def blog(request):
-    """Блог"""
-    return render(request, 'products_app/blog.html', {
-        'title': 'Блог'
-    })
+class ReviewCreateView(CreateView):
+    model = Review
+    fields = ['author_name', 'text', 'rating']
+    template_name = 'products_app/add_review.html'
+
+    def form_valid(self, form):
+        form.instance.product_id = self.kwargs['product_id']
+        return super().form_valid(form)
+
+    def get_success_url(self):
+        return reverse_lazy('product_detail', kwargs={'product_id': self.kwargs['product_id']})
 
 
-def about(request):
-    """О нас"""
-    return render(request, 'products_app/about.html', {
-        'title': 'О нас'
-    })
+class SearchView(ListView):
+    model = Product
+    template_name = 'products_app/search.html'
+    context_object_name = 'products'
+
+    def get_queryset(self):
+        q = self.request.GET.get('s')
+        return Product.objects.filter(name__icontains=q) if q else Product.objects.all()
 
 
-def basket(request):
-    """Корзина"""
-    return render(request, 'products_app/basket.html', {
-        'title': 'Корзина'
-    })
+class BlogView(TemplateView):
+    template_name = 'products_app/blog.html'
 
 
-def hashtags(request):
-    """Хештеги"""
-    return render(request, 'products_app/hashtags.html', {
-        'title': 'Hashtags'
-    })
+class AboutView(TemplateView):
+    template_name = 'products_app/about.html'
 
 
-def contact(request):
-    """Контакты"""
-    return render(request, 'products_app/contact.html', {
-        'title': 'Контакты'
-        })
-    
+class BasketView(TemplateView):
+    template_name = 'products_app/basket.html'
 
-def search(request):
-    query = request.GET.get('s')
 
-    products = Product.objects.all()
+class HashtagsView(TemplateView):
+    template_name = 'products_app/hashtags.html'
 
-    if query:
-        products = products.filter(name__icontains=query)
 
-    return render(request, 'products_app/search.html', {
-        "products" : products,
-        "query" : query
-    })
-
+class ContactView(TemplateView):
+    template_name = 'products_app/contact.html'

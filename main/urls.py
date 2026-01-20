@@ -12,7 +12,9 @@ urlpatterns = [
     path('users/', include('users.urls', namespace='users')),
     path('login/', auth_views.LoginView.as_view(template_name='users/login.html'), name='login'),
     path('clothes/', include('clothes.urls')),
+    path('', include('CineBoard.urls')),
 ]
+
 
 
 if settings.DEBUG:
@@ -20,6 +22,4 @@ if settings.DEBUG:
         settings.MEDIA_URL,
         document_root=settings.MEDIA_ROOT
     )
-
-
-
+    

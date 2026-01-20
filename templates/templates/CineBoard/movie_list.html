@@ -1,0 +1,42 @@
+{% extends 'CineBoard/base.html' %}
+
+{% block content %}
+<h1>Список фильмов</h1>
+
+<form method="GET" action="{% url 'movie_search' %}">
+    <input type="text" name="q" placeholder="Поиск по названию...">
+    <button type="submit">Искать</button>
+</form>
+
+<div style="margin: 20px 0;">
+    <a href="{% url 'movie_add' %}">Добавить фильм</a> | 
+    <a href="{% url 'movie_list' %}">Главная</a>
+</div>
+
+<hr>
+
+<div class="movie-container">
+    {% for movie in movies %}
+        <div style="margin-bottom: 30px; border-bottom: 1px solid #ccc; padding-bottom: 20px;">
+            
+            {% if movie.image %}
+                <img src="{{ movie.image.url }}" width="200" alt="{{ movie.title }}" style="display: block; margin-bottom: 10px;">
+            {% else %}
+                <div style="width: 200px; height: 250px; background: #eee; display: flex; align-items: center; justify-content: center; margin-bottom: 10px;">
+                    <span>Нет фото</span>
+                </div>
+            {% endif %}
+
+            <h3>{{ movie.title }} — <span style="color: #f39c12;">★ {{ movie.rating }}</span></h3>
+            <p><strong>Жанр:</strong> {{ movie.get_genre_display }} | <strong>Дата:</strong> {{ movie.release_date }}</p>
+            
+            <div style="margin-top: 10px;">
+                <a href="{% url 'movie_edit' movie.pk %}">Редактировать</a> | 
+                <a href="{% url 'movie_delete' movie.pk %}">Удалить</a>
+            </div>
+        </div>
+    {% empty %}
+        <p>Фильмов пока нет.</p>
+    {% endfor %}
+</div>
+{% endblock %}
